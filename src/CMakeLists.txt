@@ -1,12 +1,13 @@
 #checking include/library paths
 message(STATUS "Checking Include Path" $ENV{CMAKE_INCLUDE_PATH} ${CMAKE_INCLUDE_PATH})
 message(STATUS "Checking Library Path" $ENV{CMAKE_LIBRARY_PATH} ${CMAKE_LIBRARY_PATH})
+message(STATUS "Checking Prefix Path" $ENV{CMAKE_PREFIX_PATH} ${CMAKE_PREFIX_PATH})
+message(STATUS "Checking Module Path" $ENV{CMAKE_MODULE_PATH} ${CMAKE_MODULE_PATH})
 
 #Dependency check
 find_package(PkgConfig REQUIRED)
 find_package(zlib REQUIRED)
-pkg_check_modules(FFTW REQUIRED fftw3)
-pkg_check_modules(MXML REQUIRED mxml)
+find_package(FFTW REQUIRED)
 find_package(Threads   REQUIRED)
 find_package(OSS)
 find_package(Alsa)
@@ -29,11 +30,13 @@ mark_as_advanced(DSSI_LIBRARIES)
 pkg_search_module(LIBLO liblo>=0.26)
 mark_as_advanced(LIBLO_LIBRARIES)
 
-CHECK_FUNCTION_EXISTS(sched_setscheduler HAVE_SCHEDULER)
+if(NOT WIN32)
+    CHECK_FUNCTION_EXISTS(sched_setscheduler HAVE_SCHEDULER)
 
-execute_process(COMMAND echo fistpl 0
-                COMMAND as -
-                ERROR_VARIABLE AVOID_ASM)
+    execute_process(COMMAND echo fistpl 0
+                    COMMAND as -
+                    ERROR_VARIABLE AVOID_ASM)
+endif()
 
 ######### Settings ###########
 # NOTE: These cache variables should normally not be changed in this
@@ -248,12 +251,14 @@ if(NTK_FOUND)
 endif(NTK_FOUND)
 
 if(FltkGui)
-	#UGLY WORKAROUND
-	find_program (FLTK_CONFIG fltk-config)
-	if (FLTK_CONFIG)
-		execute_process (COMMAND ${FLTK_CONFIG} --use-images --ldflags OUTPUT_VARIABLE FLTK_LDFLAGS)
-		string(STRIP ${FLTK_LDFLAGS} FLTK_LIBRARIES)
-	endif()
+    if(NOT WIN32)
+        #UGLY WORKAROUND
+        find_program (FLTK_CONFIG fltk-config)
+        if (FLTK_CONFIG)
+            execute_process (COMMAND ${FLTK_CONFIG} --use-images --ldflags OUTPUT_VARIABLE FLTK_LDFLAGS)
+            string(STRIP "${FLTK_LDFLAGS}" FLTK_LIBRARIES)
+        endif()
+    endif()
 
 	message(STATUS ${FLTK_LDFLAGS})
 
@@ -302,6 +307,7 @@ link_directories(${AUDIO_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${FFTW_LIBRARY_DIRS}
 include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CMAKE_CURRENT_BINARY_DIR}
+	MXml
 	)
 
 
@@ -321,6 +327,7 @@ add_subdirectory(Effects)
 add_subdirectory(Params)
 add_subdirectory(DSP)
 add_subdirectory(Nio)
+add_subdirectory(MXml)
 
 add_library(zynaddsubfx_core STATIC
 	${zynaddsubfx_dsp_SRCS}
@@ -335,11 +342,8 @@ target_link_libraries(zynaddsubfx_core
 	${FFTW_LIBRARIES}
 	${MXML_LIBRARIES}
 	${OS_LIBRARIES}
+	MXml
 	pthread)
-
-if(CompileTests)
-	add_subdirectory(Tests)
-endif(CompileTests)
 
 message(STATUS "using link directories: ${AUDIO_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${FFTW_LIBRARY_DIRS} ${MXML_LIBRARY_DIRS} ${FLTK_LIBRARY_DIRS}")
 

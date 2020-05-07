@@ -26,6 +26,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <ctime>
 #include <cctype>
 #include <algorithm>
 #include <signal.h>

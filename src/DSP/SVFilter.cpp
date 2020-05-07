@@ -24,7 +24,7 @@
 #include <cstdio>
 #include <cstring>
 #include <cassert>
-#include <err.h>
+#include <iostream>
 #include "../Misc/Util.h"
 #include "SVFilter.h"
 
@@ -142,7 +142,7 @@ void SVFilter::singlefilterout(float *smp, fstage &x, parameters &par)
             out = &x.notch;
             break;
         default:
-            errx(1, "Impossible SVFilter type encountered [%d]", type);
+            std::cerr << "Impossible SVFilter type encountered [" << type << "]\n";
     }
 
     for(int i = 0; i < buffersize; ++i) {

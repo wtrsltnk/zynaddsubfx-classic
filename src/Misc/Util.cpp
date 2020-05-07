@@ -25,7 +25,6 @@
 #include <cassert>
 #include <math.h>
 #include <stdio.h>
-#include <err.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>

@@ -36,6 +36,9 @@ add_library(zynaddsubfx_gui STATIC
         WidgetPDial.cpp
 	)
 
+target_include_directories(zynaddsubfx_gui
+    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../MXml")
+
 if(NtkGui)
   target_link_libraries(zynaddsubfx_gui ${NTK_LIBRARIES})
 endif(NtkGui)

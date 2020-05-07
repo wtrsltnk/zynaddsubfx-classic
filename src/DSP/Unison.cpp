@@ -21,7 +21,7 @@
 
 #include <cmath>
 #include <cstring>
-#include <err.h>
+#include <iostream>
 
 #include "Unison.h"
 
@@ -109,8 +109,8 @@ void Unison::updateParameters(void)
     //If functions exceed this limit, they should have requested a bigguer delay
     //and thus are buggy
     if(unison_amplitude_samples >= max_delay - 1) {
-        warnx("BUG: Unison amplitude samples too big");
-        warnx("Unision max_delay should be larger");
+        std::cout << "BUG: Unison amplitude samples too big\n";
+        std::cout << "Unision max_delay should be larger\n";
         unison_amplitude_samples = max_delay - 2;
     }
 
