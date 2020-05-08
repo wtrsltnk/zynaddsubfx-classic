@@ -104,8 +104,8 @@ inline void sprng(prng_t p)
 /*
  * The random generator (0.0f..1.0f)
  */
-# define INT32_MAX      (2147483647)
-#define RND (prng() / (INT32_MAX * 1.0f))
+# define RND_INT32_MAX      (2147483647)
+#define RND (prng() / (RND_INT32_MAX * 1.0f))
 
 //Linear Interpolation
 float interpolate(const float *data, size_t len, float pos);

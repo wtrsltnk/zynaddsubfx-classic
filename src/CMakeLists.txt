@@ -358,6 +358,20 @@ target_link_libraries(zynaddsubfx
 	${AUDIO_LIBRARIES}
 	)
 
+if (WIN32)
+    find_file(FFTW_BIN_PATH
+        NAME "libfftw3-3.dll"
+        PATHS ${CMAKE_PREFIX_PATH}/bin)
+
+    configure_file(${FFTW_BIN_PATH} ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+
+    find_file(PORTAUDIO_BIN_PATH
+        NAME "libportaudio.dll"
+        PATHS ${CMAKE_PREFIX_PATH}/bin)
+
+    configure_file(${PORTAUDIO_BIN_PATH} ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+endif()
+
 if (DssiEnable)
 	add_library(zynaddsubfx_dssi SHARED
 		Output/DSSIaudiooutput.cpp
