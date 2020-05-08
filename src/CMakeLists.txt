@@ -1,8 +1,6 @@
 #checking include/library paths
 message(STATUS "Checking Include Path" $ENV{CMAKE_INCLUDE_PATH} ${CMAKE_INCLUDE_PATH})
 message(STATUS "Checking Library Path" $ENV{CMAKE_LIBRARY_PATH} ${CMAKE_LIBRARY_PATH})
-message(STATUS "Checking Prefix Path" $ENV{CMAKE_PREFIX_PATH} ${CMAKE_PREFIX_PATH})
-message(STATUS "Checking Module Path" $ENV{CMAKE_MODULE_PATH} ${CMAKE_MODULE_PATH})
 
 #Dependency check
 find_package(PkgConfig REQUIRED)
@@ -108,17 +106,17 @@ endif()
 
 
 if (GuiModule STREQUAL qt AND QT_FOUND)
-	set (QtGui TRUE)
+    set (QtGui TRUE)
 elseif(GuiModule STREQUAL ntk AND NTK_FOUND)
-	set (NtkGui TRUE)
+    set (NtkGui TRUE)
 elseif(GuiModule STREQUAL fltk AND FLTK_FOUND)
-	set (FltkGui TRUE)
+    set (FltkGui TRUE)
 elseif(GuiModule STREQUAL off)
-        add_definitions(-DDISABLE_GUI)
+    add_definitions(-DDISABLE_GUI)
 else  ()
-        set (GuiModule off CACHE STRING "GUI module, either fltk, qt or off")
-        add_definitions(-DDISABLE_GUI)
-	message(STATUS "GUI module defaulting to off")
+    set (GuiModule off CACHE STRING "GUI module, either fltk, qt or off")
+    add_definitions(-DDISABLE_GUI)
+    message(STATUS "GUI module defaulting to off")
 endif()
 
 
@@ -152,57 +150,53 @@ set (BuildOptionsDebug
 # on the actual compiling.
 
 if(AlsaEnable)
-	list(APPEND AUDIO_LIBRARIES ${ASOUND_LIBRARY})
-	list(APPEND AUDIO_LIBRARY_DIRS ${ASOUND_LIBRARY_DIRS})
-	add_definitions(-DALSA=1)
+    list(APPEND AUDIO_LIBRARIES ${ASOUND_LIBRARY})
+    list(APPEND AUDIO_LIBRARY_DIRS ${ASOUND_LIBRARY_DIRS})
+    add_definitions(-DALSA=1)
 endif(AlsaEnable)
 
 if(JackEnable)
-	list(APPEND AUDIO_LIBRARIES ${JACK_LIBRARIES})
-	list(APPEND AUDIO_LIBRARY_DIRS ${JACK_LIBRARY_DIRS})
-	add_definitions(-DJACK=1)
+    list(APPEND AUDIO_LIBRARIES ${JACK_LIBRARIES})
+    list(APPEND AUDIO_LIBRARY_DIRS ${JACK_LIBRARY_DIRS})
+    add_definitions(-DJACK=1)
 endif(JackEnable)
 
 if(OssEnable)
-	add_definitions(-DOSS=1)
+    add_definitions(-DOSS=1)
 endif(OssEnable)
 
 if(PaEnable)
-	include_directories(${PORTAUDIO_INCLUDE_DIR})
-	add_definitions(-DPORTAUDIO=1)
-	list(APPEND AUDIO_LIBRARIES ${PORTAUDIO_LIBRARIES})
-	list(APPEND AUDIO_LIBRARY_DIRS ${PORTAUDIO_LIBRARY_DIRS})
+    include_directories(${PORTAUDIO_INCLUDE_DIR})
+    add_definitions(-DPORTAUDIO=1)
+    list(APPEND AUDIO_LIBRARIES ${PORTAUDIO_LIBRARIES})
+    list(APPEND AUDIO_LIBRARY_DIRS ${PORTAUDIO_LIBRARY_DIRS})
 endif()
 
 if (CompileTests)
-	ENABLE_TESTING()
+    ENABLE_TESTING()
 endif()
 
 if(LashEnable)
-	include_directories(${LASH_INCLUDE_DIRS})
-	add_definitions(-DLASH=1)
-	list(APPEND AUDIO_LIBRARIES ${LASH_LIBRARIES})
-	list(APPEND AUDIO_LIBRARY_DIRS ${LASH_LIBRARY_DIRS})
-	message(STATUS "Compiling with lash")
+    include_directories(${LASH_INCLUDE_DIRS})
+    add_definitions(-DLASH=1)
+    list(APPEND AUDIO_LIBRARIES ${LASH_LIBRARIES})
+    list(APPEND AUDIO_LIBRARY_DIRS ${LASH_LIBRARY_DIRS})
+    message(STATUS "Compiling with lash")
 endif()
+
 if(LibloEnable)
-	include_directories(${LIBLO_INCLUDE_DIRS})
-	add_definitions(-DUSE_NSM=1)
-	list(APPEND AUDIO_LIBRARIES ${LIBLO_LIBRARIES})
-	list(APPEND AUDIO_LIBRARY_DIRS ${LIBLO_LIBRARY_DIRS})
-	message(STATUS "Compiling with liblo")
+    include_directories(${LIBLO_INCLUDE_DIRS})
+    add_definitions(-DUSE_NSM=1)
+    list(APPEND AUDIO_LIBRARIES ${LIBLO_LIBRARIES})
+    list(APPEND AUDIO_LIBRARY_DIRS ${LIBLO_LIBRARY_DIRS})
+    message(STATUS "Compiling with liblo")
 endif()
 
 # other include directories
 include_directories(${ZLIB_INCLUDE_DIRS} ${MXML_INCLUDE_DIRS})
 
-add_definitions(
-	 -g #TODO #todo put in a better location
-	 -Wall
-	 -Wextra
-	 )
-if(NOT AVOID_ASM)
-	message(STATUS "Compiling with x86 opcode support")
+if (NOT AVOID_ASM)
+    message(STATUS "Compiling with x86 opcode support")
     add_definitions(-DASM_F2I_YES)
 endif()
 
@@ -260,49 +254,49 @@ if(FltkGui)
         endif()
     endif()
 
-	message(STATUS ${FLTK_LDFLAGS})
+    message(STATUS ${FLTK_LDFLAGS})
 
 
-	set(GUI_LIBRARIES ${FLTK_LIBRARIES} ${FLTK_LIBRARIES} ${OPENGL_LIBRARIES} zynaddsubfx_gui)
+    set(GUI_LIBRARIES ${FLTK_LIBRARIES} ${FLTK_LIBRARIES} ${OPENGL_LIBRARIES} zynaddsubfx_gui)
 
-	add_definitions(-DFLTK_GUI)
-	message(STATUS "Will build FLTK gui")
+    add_definitions(-DFLTK_GUI)
+    message(STATUS "Will build FLTK gui")
 
-	include_directories(
-			${FLTK_INCLUDE_DIR}
-			"${CMAKE_CURRENT_SOURCE_DIR}/UI"
-			"${CMAKE_CURRENT_BINARY_DIR}/UI"
-			)
+    include_directories(
+                    ${FLTK_INCLUDE_DIR}
+                    "${CMAKE_CURRENT_SOURCE_DIR}/UI"
+                    "${CMAKE_CURRENT_BINARY_DIR}/UI"
+                    )
 
-	add_subdirectory(UI)
+    add_subdirectory(UI)
 endif()
 
 if(NtkGui)
 
-        find_program( FLTK_FLUID_EXECUTABLE ntk-fluid)
-        
-	message(STATUS ${NTK_LDFLAGS} ${NTK_IMAGES_LDFLAGS})
+    find_program( FLTK_FLUID_EXECUTABLE ntk-fluid)
 
-	set(GUI_LIBRARIES ${NTK_LIBRARIES} ${NTK_IMAGES_LIBRARIES} ${OPENGL_LIBRARIES} zynaddsubfx_gui)
+    message(STATUS ${NTK_LDFLAGS} ${NTK_IMAGES_LDFLAGS})
 
-	add_definitions(-DNTK_GUI)
+    set(GUI_LIBRARIES ${NTK_LIBRARIES} ${NTK_IMAGES_LIBRARIES} ${OPENGL_LIBRARIES} zynaddsubfx_gui)
 
-	message(STATUS "Will build NTK gui")
+    add_definitions(-DNTK_GUI)
 
-	include_directories(
-			${NTK_INCLUDE_DIRS}
-			"${CMAKE_CURRENT_SOURCE_DIR}/UI"
-			"${CMAKE_CURRENT_BINARY_DIR}/UI"
-			)
+    message(STATUS "Will build NTK gui")
 
-	add_subdirectory(UI)
+    include_directories(
+                    ${NTK_INCLUDE_DIRS}
+                    "${CMAKE_CURRENT_SOURCE_DIR}/UI"
+                    "${CMAKE_CURRENT_BINARY_DIR}/UI"
+                    )
+
+    add_subdirectory(UI)
 endif()
 
 ########### General section ##############
 # Following this should be only general compilation code, and no mention
 # of module-specific variables
 
-link_directories(${AUDIO_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${FFTW_LIBRARY_DIRS} ${MXML_LIBRARY_DIRS} ${FLTK_LIBRARY_DIRS} ${NTK_LIBRARY_DIRS})
+link_directories(${AUDIO_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${FFTW_LIBRARY_DIRS} ${FLTK_LIBRARY_DIRS} ${NTK_LIBRARY_DIRS})
 
 include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}
@@ -345,9 +339,6 @@ target_link_libraries(zynaddsubfx_core
 	MXml
 	pthread)
 
-message(STATUS "using link directories: ${AUDIO_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${FFTW_LIBRARY_DIRS} ${MXML_LIBRARY_DIRS} ${FLTK_LIBRARY_DIRS}")
-
-
 add_executable(zynaddsubfx main.cpp)
 
 target_link_libraries(zynaddsubfx
@@ -365,27 +356,29 @@ if (WIN32)
 
     configure_file(${FFTW_BIN_PATH} ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 
-    find_file(PORTAUDIO_BIN_PATH
-        NAME "libportaudio.dll"
-        PATHS ${CMAKE_PREFIX_PATH}/bin)
+    if (PaEnable)
+        find_file(PORTAUDIO_BIN_PATH
+            NAME "libportaudio.dll"
+            PATHS ${CMAKE_PREFIX_PATH}/bin)
 
-    configure_file(${PORTAUDIO_BIN_PATH} ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
-endif()
+        configure_file(${PORTAUDIO_BIN_PATH} ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+    endif(PaEnable)
+endif(WIN32)
 
 if (DssiEnable)
-	add_library(zynaddsubfx_dssi SHARED
-		Output/DSSIaudiooutput.cpp
-		)
+    add_library(zynaddsubfx_dssi SHARED
+            Output/DSSIaudiooutput.cpp
+            )
 
-	target_link_libraries(zynaddsubfx_dssi
-        zynaddsubfx_core
-		${OS_LIBRARIES}
-		)
-	if (${CMAKE_SIZEOF_VOID_P} EQUAL "8")
-		install(TARGETS zynaddsubfx_dssi LIBRARY DESTINATION lib64/dssi/)
-	else ()
-		install(TARGETS zynaddsubfx_dssi LIBRARY DESTINATION lib/dssi/)
-	endif ()
+    target_link_libraries(zynaddsubfx_dssi
+    zynaddsubfx_core
+            ${OS_LIBRARIES}
+            )
+    if (${CMAKE_SIZEOF_VOID_P} EQUAL "8")
+            install(TARGETS zynaddsubfx_dssi LIBRARY DESTINATION lib64/dssi/)
+    else ()
+            install(TARGETS zynaddsubfx_dssi LIBRARY DESTINATION lib/dssi/)
+    endif ()
 endif()
 
 message(STATUS "Link libraries: ${ZLIB_LIBRARY} ${FFTW_LIBRARY} ${MXML_LIBRARIES} ${AUDIO_LIBRARIES} ${OS_LIBRARIES}")
