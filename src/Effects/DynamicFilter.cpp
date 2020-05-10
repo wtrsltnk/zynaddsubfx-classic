@@ -242,9 +242,6 @@ void DynamicFilter::setpreset(unsigned char npreset)
             break;
     }
 
-//	    for (int i=0;i<5;i++){
-//		printf("freq=%d  amp=%d  q=%d\n",filterpars->Pvowels[0].formants[i].freq,filterpars->Pvowels[0].formants[i].amp,filterpars->Pvowels[0].formants[i].q);
-//	    };
     if(insertion == 0) //lower the volume if this is system effect
         changepar(0, presets[npreset][0] * 0.5f);
     Ppreset = npreset;

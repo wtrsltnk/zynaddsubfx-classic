@@ -90,7 +90,7 @@ void Unison::updateParameters(void)
         return;
     float increments_per_second = samplerate_f
                                   / (float) update_period_samples;
-//	printf("#%g, %g\n",increments_per_second,base_freq);
+
     for(int i = 0; i < unison_size; ++i) {
         float base = powf(UNISON_FREQ_SPAN, SYNTH_T::numRandom() * 2.0f - 1.0f);
         uv[i].relative_amplitude = base;
@@ -99,7 +99,6 @@ void Unison::updateParameters(void)
         if(SYNTH_T::numRandom() < 0.5f)
             m = -m;
         uv[i].step = m;
-//		printf("%g %g\n",uv[i].relative_amplitude,period);
     }
 
     float max_speed = powf(2.0f, unison_bandwidth_cents / 1200.0f);

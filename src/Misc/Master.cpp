@@ -25,9 +25,9 @@
 
 #include "Part.h"
 
-#include "../Params/LFOParams.h"
-#include "../Effects/EffectMgr.h"
-#include "../DSP/FFTwrapper.h"
+#include <Params/LFOParams.h>
+#include <Effects/EffectMgr.h>
+#include <DSP/FFTwrapper.h>
 
 #include <stdio.h>
 #include <sys/stat.h>
@@ -490,7 +490,7 @@ void Master::GetAudioOutSamples(size_t nsamples,
 
     //Fail when resampling rather than doing a poor job
     if(synth->samplerate != samplerate) {
-        printf("darn it: %d vs %d\n", synth->samplerate, samplerate);
+        std::cout << "darn it: " << synth->samplerate << " vs " << samplerate << "\n";
         return;
     }
 

@@ -68,11 +68,9 @@ void InMgr::flush(unsigned frameStart, unsigned frameStop)
         if(ev.time < (int)frameStart || ev.time > (int)frameStop) {
             //Back out of transaction
             work.post();
-            //printf("%d vs [%d..%d]\n",ev.time, frameStart, frameStop);
             break;
         }
         queue.pop(ev);
-        //cout << ev << endl;
 
         switch(ev.type) {
             case M_NOTE:

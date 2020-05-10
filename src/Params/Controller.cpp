@@ -246,8 +246,6 @@ int Controller::initportamento(float oldfreq,
                                (64.0f - portamento.updowntimestretch) / 64.0f);
     }
 
-    //printf("%f->%f : Time %f\n",oldfreq,newfreq,portamentotime);
-
     portamento.dx = synth->buffersize_f / (portamentotime * synth->samplerate_f);
     portamento.origfreqrap = oldfreq / newfreq;
 

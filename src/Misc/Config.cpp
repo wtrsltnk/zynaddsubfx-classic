@@ -23,7 +23,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <iostream>
 
 #include "Config.h"
 #include "XMLwrapper.h"
@@ -302,7 +302,10 @@ void Config::saveConfig(const char *filename)
 
     int tmp = cfg.GzipCompression;
     cfg.GzipCompression = 0;
-    xmlcfg->saveXMLfile(filename);
+    if (xmlcfg->saveXMLfile(filename) !=0)
+    {
+        std::cerr << "failed to save file to " << filename << std::endl;
+    }
     cfg.GzipCompression = tmp;
 
     delete (xmlcfg);

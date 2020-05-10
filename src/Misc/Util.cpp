@@ -126,7 +126,6 @@ void set_realtime()
     //if you want get "sched_setscheduler undeclared" from compilation,
     //you can safely remove the folowing line:
     sched_setscheduler(0, SCHED_FIFO, &sc);
-    //if (err==0) printf("Real-time");
 #endif
 }
 

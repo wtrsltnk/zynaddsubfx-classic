@@ -194,8 +194,9 @@ class AdNoteTest:public CxxTest::TestSuite
                 note->noteout(outL, outR);
             int t_off = clock(); // timer when func returns
 
-            printf("AdNoteTest: %f seconds for %d Samples to be generated.\n",
-                   (static_cast<float>(t_off - t_on)) / CLOCKS_PER_SEC, samps);
+            std::cout << "AdNoteTest: "
+                      << (static_cast<float>(t_off - t_on)) / CLOCKS_PER_SEC << "seconds for "
+                      << samps << " Samples to be generated.\n";
         }
 #endif
 };
