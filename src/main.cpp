@@ -68,8 +68,6 @@ MasterUI *ui;
 
 #endif //DISABLE_GUI
 
-using namespace std;
-
 pthread_t thr4;
 Master   *master;
 SYNTH_T  *synth;
@@ -127,14 +125,12 @@ set_module_parameters ( Fl_Widget *o )
  */
 void initprogram(void)
 {
-    cerr.precision(1);
-    cerr << std::fixed;
-    cerr << "\nSample Rate = \t\t" << synth->samplerate << endl;
-    cerr << "Sound Buffer Size = \t" << synth->buffersize << " samples" << endl;
-    cerr << "Internal latency = \t" << synth->buffersize_f * 1000.0f
-    / synth->samplerate_f << " ms" << endl;
-    cerr << "ADsynth Oscil.Size = \t" << synth->oscilsize << " samples" << endl;
-
+    std::cout.precision(1);
+    std::cout << std::fixed
+              << "\nSample Rate = \t\t" << synth->samplerate << "\n"
+              << "Sound Buffer Size = \t" << synth->buffersize << " samples\n"
+              << "Internal latency = \t" << synth->buffersize_f * 1000.0f / synth->samplerate_f << " ms\n"
+              << "ADsynth Oscil.Size = \t" << synth->oscilsize << " samples" << std::endl;
 
     master = &Master::getInstance();
     master->swaplr = swaplr;
@@ -177,17 +173,17 @@ int main(int argc, char *argv[])
     config.init();
     dump.startnow();
     int noui = 0;
-    cerr
-    << "\nZynAddSubFX - Copyright (c) 2002-2011 Nasca Octavian Paul and others"
-    << endl;
-    cerr
-    << "                Copyright (c) 2009-2014 Mark McCurry [active maintainer]"
-    << endl;
-    cerr << "Compiled: " << __DATE__ << " " << __TIME__ << endl;
-    cerr << "This program is free software (GNU GPL v.2 or later) and \n";
-    cerr << "it comes with ABSOLUTELY NO WARRANTY.\n" << endl;
+    std::cout << "\n"
+              << "ZynAddSubFX - Copyright (c) 2002-2011 Nasca Octavian Paul and others\n"
+              << "              Copyright (c) 2009-2014 Mark McCurry [active maintainer]\n"
+              << "Compiled: " << __DATE__ << " " << __TIME__ << "\n"
+              << "This program is free software (GNU GPL v.2 or later) and \n"
+              << "it comes with ABSOLUTELY NO WARRANTY.\n" << std::endl;
+
     if(argc == 1)
-        cerr << "Try 'zynaddsubfx --help' for command-line options." << endl;
+    {
+        std::cout << "Try 'zynaddsubfx --help' for command-line options." << std::endl;
+    }
 
     /* Get the settings from the Config*/
     synth->samplerate = config.cfg.SampleRate;
@@ -203,57 +199,23 @@ int main(int argc, char *argv[])
 
     /* Parse command-line options */
     struct option opts[] = {
-        {
-            "load", 2, NULL, 'l'
-        },
-        {
-            "load-instrument", 2, NULL, 'L'
-        },
-        {
-            "sample-rate", 2, NULL, 'r'
-        },
-        {
-            "buffer-size", 2, NULL, 'b'
-        },
-        {
-            "oscil-size", 2, NULL, 'o'
-        },
-        {
-            "dump", 2, NULL, 'D'
-        },
-        {
-            "swap", 2, NULL, 'S'
-        },
-        {
-            "no-gui", 2, NULL, 'U'
-        },
-        {
-            "dummy", 2, NULL, 'Y'
-        },
-        {
-            "help", 2, NULL, 'h'
-        },
-        {
-            "version", 2, NULL, 'v'
-        },
-        {
-            "named", 1, NULL, 'N'
-        },
-        {
-            "auto-connect", 0, NULL, 'a'
-        },
-        {
-            "output", 1, NULL, 'O'
-        },
-        {
-            "input", 1, NULL, 'I'
-        },
-        {
-            "exec-after-init", 1, NULL, 'e'
-        },
-        {
-            0, 0, 0, 0
-        }
+        { "load", 2, NULL, 'l' },
+        { "load-instrument", 2, NULL, 'L' },
+        { "sample-rate", 2, NULL, 'r' },
+        { "buffer-size", 2, NULL, 'b' },
+        { "oscil-size", 2, NULL, 'o' },
+        { "dump", 2, NULL, 'D' },
+        { "swap", 2, NULL, 'S' },
+        { "no-gui", 2, NULL, 'U' },
+        { "dummy", 2, NULL, 'Y' },
+        { "help", 2, NULL, 'h' },
+        { "version", 2, NULL, 'v' },
+        { "named", 1, NULL, 'N' },
+        { "auto-connect", 0, NULL, 'a' },
+        { "output", 1, NULL, 'O' },
+        { "input", 1, NULL, 'I' },
+        { "exec-after-init", 1, NULL, 'e' },
+        { 0, 0, 0, 0 },
     };
     opterr = 0;
     int option_index = 0, opt, exitwithhelp = 0, exitwithversion = 0;
@@ -366,11 +328,11 @@ int main(int argc, char *argv[])
     synth->alias();
 
     if(exitwithversion) {
-        cout << "Version: " << VERSION << endl;
+        std::cout << "Version: " << VERSION << std::endl;
         return 0;
     }
     if(exitwithhelp != 0) {
-        cout << "Usage: zynaddsubfx [OPTION]\n\n"
+        std::cout << "Usage: zynaddsubfx [OPTION]\n\n"
              << "  -h , --help \t\t\t\t Display command-line help and exit\n"
              << "  -v , --version \t\t\t Display version and exit\n"
              << "  -l file, --load=FILE\t\t\t Loads a .xmz file\n"
@@ -388,7 +350,7 @@ int main(int argc, char *argv[])
              << "  -O , --output\t\t\t\t Set Output Engine\n"
              << "  -I , --input\t\t\t\t Set Input Engine\n"
              << "  -e , --exec-after-init\t\t Run post-initialization script\n"
-             << endl;
+             << std::endl;
 
         return 0;
     }
@@ -396,35 +358,36 @@ int main(int argc, char *argv[])
     //produce denormal buf
     denormalkillbuf = new float [synth->buffersize];
     for(int i = 0; i < synth->buffersize; ++i)
+    {
         denormalkillbuf[i] = (RND - 0.5f) * 1e-16;
+    }
 
     initprogram();
 
     if(!loadfile.empty()) {
         int tmp = master->loadXML(loadfile.c_str());
         if(tmp < 0) {
-            cerr << "ERROR: Could not load master file " << loadfile
-                 << "." << endl;
+            std::cerr << "ERROR: Could not load master file " << loadfile
+                 << "." << std::endl;
             exit(1);
         }
         else {
             master->applyparameters();
-            cout << "Master file loaded." << endl;
+            std::cout << "Master file loaded." << std::endl;
         }
     }
 
     if(!loadinstrument.empty()) {
         int loadtopart = 0;
-        int tmp = master->part[loadtopart]->loadXMLinstrument(
-            loadinstrument.c_str());
+        int tmp = master->part[loadtopart]->loadXMLinstrument(loadinstrument.c_str());
         if(tmp < 0) {
-            cerr << "ERROR: Could not load instrument file "
-                 << loadinstrument << '.' << endl;
+            std::cerr << "ERROR: Could not load instrument file "
+                 << loadinstrument << '.' << std::endl;
             exit(1);
         }
         else {
             master->part[loadtopart]->applyparameters();
-            cout << "Instrument file loaded." << endl;
+            std::cout << "Instrument file loaded." << std::endl;
         }
     }
 
@@ -432,9 +395,11 @@ int main(int argc, char *argv[])
     bool ioGood = Nio::start();
 
     if(!execAfterInit.empty()) {
-        cout << "Executing user supplied command: " << execAfterInit << endl;
+        std::cout << "Executing user supplied command: " << execAfterInit << std::endl;
         if(system(execAfterInit.c_str()) == -1)
-            cerr << "Command Failed..." << endl;
+        {
+            std::cerr << "Command Failed..." << std::endl;
+        }
     }
 
 
