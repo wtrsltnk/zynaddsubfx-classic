@@ -1,11 +1,10 @@
 set(zynaddsubfx_synth_SRCS
-	Synth/SynthNote.cpp
-	Synth/ADnote.cpp
-	Synth/Envelope.cpp
-	Synth/LFO.cpp
-	Synth/OscilGen.cpp
-	Synth/PADnote.cpp
-	Synth/Resonance.cpp
-	Synth/SUBnote.cpp
-	PARENT_SCOPE
-)
+    Synth/SynthNote.cpp
+    Synth/ADnote.cpp
+    Synth/Envelope.cpp
+    Synth/LFO.cpp
+    Synth/OscilGen.cpp
+    Synth/PADnote.cpp
+    Synth/Resonance.cpp
+    Synth/SUBnote.cpp
+    PARENT_SCOPE)

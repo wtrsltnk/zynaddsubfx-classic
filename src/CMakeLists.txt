@@ -40,21 +40,23 @@ endif()
 # NOTE: These cache variables should normally not be changed in this
 # file, but either in in CMakeCache.txt before compile, or by passing
 # parameters directly into cmake using the -D flag.
-SET (GuiModule fltk CACHE STRING "GUI module, either fltk, ntk or off")
-SET (CompileTests ${CXXTEST_FOUND} CACHE BOOL "whether tests should be compiled in or not")
-SET (AlsaEnable ${ALSA_FOUND} CACHE BOOL
+set(GuiModule fltk CACHE STRING
+    "GUI module, either fltk, ntk or off")
+set(CompileTests ${CXXTEST_FOUND} CACHE BOOL
+    "whether tests should be compiled in or not")
+set(AlsaEnable ${ALSA_FOUND} CACHE BOOL
     "Enable support for Advanced Linux Sound Architecture")
-SET (JackEnable ${JACK_FOUND} CACHE BOOL
+set(JackEnable ${JACK_FOUND} CACHE BOOL
     "Enable support for JACK Audio Connection toolKit")
-SET (OssEnable ${OSS_FOUND} CACHE BOOL
+set(OssEnable ${OSS_FOUND} CACHE BOOL
     "Enable support for Open Sound System")
-SET (PaEnable ${PORTAUDIO_FOUND} CACHE BOOL
+set(PaEnable ${PORTAUDIO_FOUND} CACHE BOOL
     "Enable support for Port Audio System")
-SET (LashEnable ${LASH_FOUND} CACHE BOOL
+set(LashEnable ${LASH_FOUND} CACHE BOOL
     "Enable LASH Audio Session Handler")
-SET (DssiEnable ${DSSI_FOUND} CACHE BOOL
+set(DssiEnable ${DSSI_FOUND} CACHE BOOL
     "Enable DSSI Plugin compilation")
-SET (LibloEnable ${LIBLO_FOUND} CACHE BOOL
+set(LibloEnable ${LIBLO_FOUND} CACHE BOOL
     "Enable Liblo")
 
 # Now, handle the incoming settings and set define flags/variables based
@@ -72,53 +74,52 @@ endif()
 
 
 # Give a good guess on the best Input/Output default backends
-if (JackEnable)
-    SET (DefaultOutput jack CACHE STRING
+if(JackEnable)
+    set(DefaultOutput jack CACHE STRING
         "Default Output module: [null, alsa, oss, jack, portaudio]")
     # Override with perhaps more helpful midi backends
-    if (AlsaEnable)
-        SET (DefaultInput alsa CACHE STRING
+    if(AlsaEnable)
+        set(DefaultInput alsa CACHE STRING
             "Default Input module: [null, alsa, oss, jack]")
-    elseif (OssEnable)
-        SET (DefaultInput oss CACHE STRING
+    elseif(OssEnable)
+        set(DefaultInput oss CACHE STRING
             "Default Input module: [null, alsa, oss, jack]")
-    else ()
-        SET (DefaultInput jack CACHE STRING
+    else()
+        set(DefaultInput jack CACHE STRING
             "Default Input module: [null, alsa, oss, jack]")
-    endif ()
-elseif (AlsaEnable)
-    SET (DefaultOutput alsa CACHE STRING
+    endif()
+elseif(AlsaEnable)
+    set(DefaultOutput alsa CACHE STRING
         "Default Output module: [null, alsa, oss, jack, portaudio]")
-    SET (DefaultInput alsa CACHE STRING
+    set(DefaultInput alsa CACHE STRING
         "Default Input module: [null, alsa, oss, jack]")
-elseif (OssEnable)
-    SET (DefaultOutput oss CACHE STRING
+elseif(OssEnable)
+    set(DefaultOutput oss CACHE STRING
         "Default Output module: [null, alsa, oss, jack, portaudio]")
-    SET (DefaultInput oss CACHE STRING
+    set(DefaultInput oss CACHE STRING
         "Default Input module: [null, alsa, oss, jack]")
 else()
-    SET (DefaultOutput null CACHE STRING
+    set(DefaultOutput null CACHE STRING
         "Default Output module: [null, alsa, oss, jack, portaudio]")
-    SET (DefaultInput null CACHE STRING
+    set(DefaultInput null CACHE STRING
         "Default Input module: [null, alsa, oss, jack]")
 endif()
 
 
 
-if (GuiModule STREQUAL qt AND QT_FOUND)
-    set (QtGui TRUE)
+if(GuiModule STREQUAL qt AND QT_FOUND)
+    set(QtGui TRUE)
 elseif(GuiModule STREQUAL ntk AND NTK_FOUND)
-    set (NtkGui TRUE)
+    set(NtkGui TRUE)
 elseif(GuiModule STREQUAL fltk AND FLTK_FOUND)
-    set (FltkGui TRUE)
+    set(FltkGui TRUE)
 elseif(GuiModule STREQUAL off)
     add_definitions(-DDISABLE_GUI)
 else  ()
-    set (GuiModule off CACHE STRING "GUI module, either fltk, qt or off")
+    set(GuiModule off CACHE STRING "GUI module, either fltk, qt or off")
     add_definitions(-DDISABLE_GUI)
     message(STATUS "GUI module defaulting to off")
 endif()
-
 
 #Build Flags
 option (BuildForAMD_X86_64 "Build for AMD x86_64 system" OFF)
@@ -127,23 +128,21 @@ option (BuildForDebug "Include gdb debugging support" OFF)
 
 set(CMAKE_BUILD_TYPE "Release")
 
-set (BuildOptions_x86_64AMD
-    "-O3 -march=athlon64 -m64 -Wall -ffast-math -fno-finite-math-only -fomit-frame-pointer"
-  CACHE STRING "X86_64 compiler options"
-)
+set(BuildOptions_x86_64AMD
+    "-O3 -march=athlon64 -m64 -Wall -ffast-math -fno-finite-math-only -fomit-frame-pointer" CACHE STRING
+    "X86_64 compiler options")
 
-set (BuildOptions_X86_64Core2
-    "-O3 -march=core2 -m64 -Wall -ffast-math -fno-finite-math-only -fomit-frame-pointer"
-  CACHE STRING "X86_64 compiler options"
-)
+set(BuildOptions_X86_64Core2
+    "-O3 -march=core2 -m64 -Wall -ffast-math -fno-finite-math-only -fomit-frame-pointer" CACHE STRING
+    "X86_64 compiler options")
 
-set (BuildOptionsBasic
-    "-O3 -msse -msse2 -mfpmath=sse -ffast-math -fomit-frame-pointer"
-    CACHE STRING "basic X86 complier options"
-)
+set(BuildOptionsBasic
+    "-O3 -msse -msse2 -mfpmath=sse -ffast-math -fomit-frame-pointer" CACHE STRING
+    "basic X86 complier options")
 
-set (BuildOptionsDebug
-    "-O0 -g3 -ggdb -Wall -Wpointer-arith" CACHE STRING "Debug build flags")
+set(BuildOptionsDebug
+    "-O0 -g3 -ggdb -Wall -Wpointer-arith" CACHE STRING
+    "Debug build flags")
 
 ########### Settings dependant code ###########
 # From here on, the setting variables have  been prepared so concentrate
@@ -172,7 +171,7 @@ if(PaEnable)
     list(APPEND AUDIO_LIBRARY_DIRS ${PORTAUDIO_LIBRARY_DIRS})
 endif()
 
-if (CompileTests)
+if(CompileTests)
     ENABLE_TESTING()
 endif()
 
@@ -195,60 +194,53 @@ endif()
 # other include directories
 include_directories(${ZLIB_INCLUDE_DIRS} ${MXML_INCLUDE_DIRS})
 
-if (NOT AVOID_ASM)
-    message(STATUS "Compiling with x86 opcode support")
-    add_definitions(-DASM_F2I_YES)
-endif()
-
-if (BuildForDebug)
-	set (CMAKE_BUILD_TYPE "Debug")
-	set (CMAKE_CXX_FLAGS_DEBUG ${BuildOptionsDebug})
-	message (STATUS "Building for ${CMAKE_BUILD_TYPE}, flags: ${CMAKE_CXX_FLAGS_DEBUG}")
-else (BuildForDebug)
-	set (CMAKE_BUILD_TYPE "Release")
-	if (BuildForAMD_X86_64)
-		set (CMAKE_CXX_FLAGS_RELEASE ${BuildOptions_x86_64AMD})
-	else (BuildForAMD_X86_64)
-		if (BuildForCore2_X86_64)
-			set (CMAKE_CXX_FLAGS_RELEASE ${BuildOptions_X86_64Core2})
-		else (BuildForCore2_X86_64)
-			set (CMAKE_CXX_FLAGS_RELEASE ${BuildOptionsBasic})
-		endif (BuildForCore2_X86_64)
-	endif (BuildForAMD_X86_64)
-	message (STATUS "Building for ${CMAKE_BUILD_TYPE}, flags: ${CMAKE_CXX_FLAGS_RELEASE}")
-endif (BuildForDebug)
-
-add_definitions(-fPIC)
+if(BuildForDebug)
+    set(CMAKE_BUILD_TYPE "Debug")
+    set(CMAKE_CXX_FLAGS_DEBUG ${BuildOptionsDebug})
+    message (STATUS "Building for ${CMAKE_BUILD_TYPE}, flags: ${CMAKE_CXX_FLAGS_DEBUG}")
+else(BuildForDebug)
+    set(CMAKE_BUILD_TYPE "Release")
+    if(BuildForAMD_X86_64)
+            set(CMAKE_CXX_FLAGS_RELEASE ${BuildOptions_x86_64AMD})
+    else(BuildForAMD_X86_64)
+            if(BuildForCore2_X86_64)
+                    set(CMAKE_CXX_FLAGS_RELEASE ${BuildOptions_X86_64Core2})
+            else(BuildForCore2_X86_64)
+                    set(CMAKE_CXX_FLAGS_RELEASE ${BuildOptionsBasic})
+            endif(BuildForCore2_X86_64)
+    endif(BuildForAMD_X86_64)
+    message (STATUS "Building for ${CMAKE_BUILD_TYPE}, flags: ${CMAKE_CXX_FLAGS_RELEASE}")
+endif(BuildForDebug)
 
 if(FLTK_FOUND)
-	mark_as_advanced(FORCE FLTK_BASE_LIBRARY)
-	mark_as_advanced(FORCE FLTK_CONFIG_SCRIPT)
-	mark_as_advanced(FORCE FLTK_DIR)
-	mark_as_advanced(FORCE FLTK_FLUID_EXECUTABLE)
-	mark_as_advanced(FORCE FLTK_FORMS_LIBRARY)
-	mark_as_advanced(FORCE FLTK_GL_LIBRARY)
-	mark_as_advanced(FORCE FLTK_IMAGES_LIBRARY)
-	mark_as_advanced(FORCE FLTK_INCLUDE_DIR)
-	mark_as_advanced(FORCE FLTK_MATH_LIBRARY)
+    mark_as_advanced(FORCE FLTK_BASE_LIBRARY)
+    mark_as_advanced(FORCE FLTK_CONFIG_SCRIPT)
+    mark_as_advanced(FORCE FLTK_DIR)
+    mark_as_advanced(FORCE FLTK_FLUID_EXECUTABLE)
+    mark_as_advanced(FORCE FLTK_FORMS_LIBRARY)
+    mark_as_advanced(FORCE FLTK_GL_LIBRARY)
+    mark_as_advanced(FORCE FLTK_IMAGES_LIBRARY)
+    mark_as_advanced(FORCE FLTK_INCLUDE_DIR)
+    mark_as_advanced(FORCE FLTK_MATH_LIBRARY)
 endif(FLTK_FOUND)
 
 if(NTK_FOUND)
-	mark_as_advanced(FORCE NTK_BASE_LIBRARY)
-	mark_as_advanced(FORCE NTK_CONFIG_SCRIPT)
-	mark_as_advanced(FORCE NTK_DIR)
-	mark_as_advanced(FORCE FLTK_FLUID_EXECUTABLE)
-	mark_as_advanced(FORCE NTK_FORMS_LIBRARY)
-	mark_as_advanced(FORCE NTK_GL_LIBRARY)
-	mark_as_advanced(FORCE NTK_IMAGES_LIBRARY)
-	mark_as_advanced(FORCE NTK_INCLUDE_DIR)
-	mark_as_advanced(FORCE NTK_MATH_LIBRARY)
+    mark_as_advanced(FORCE NTK_BASE_LIBRARY)
+    mark_as_advanced(FORCE NTK_CONFIG_SCRIPT)
+    mark_as_advanced(FORCE NTK_DIR)
+    mark_as_advanced(FORCE FLTK_FLUID_EXECUTABLE)
+    mark_as_advanced(FORCE NTK_FORMS_LIBRARY)
+    mark_as_advanced(FORCE NTK_GL_LIBRARY)
+    mark_as_advanced(FORCE NTK_IMAGES_LIBRARY)
+    mark_as_advanced(FORCE NTK_INCLUDE_DIR)
+    mark_as_advanced(FORCE NTK_MATH_LIBRARY)
 endif(NTK_FOUND)
 
 if(FltkGui)
     if(NOT WIN32)
         #UGLY WORKAROUND
         find_program (FLTK_CONFIG fltk-config)
-        if (FLTK_CONFIG)
+        if(FLTK_CONFIG)
             execute_process (COMMAND ${FLTK_CONFIG} --use-images --ldflags OUTPUT_VARIABLE FLTK_LDFLAGS)
             string(STRIP "${FLTK_LDFLAGS}" FLTK_LIBRARIES)
         endif()
@@ -256,17 +248,16 @@ if(FltkGui)
 
     message(STATUS ${FLTK_LDFLAGS})
 
-
     set(GUI_LIBRARIES ${FLTK_LIBRARIES} ${FLTK_LIBRARIES} ${OPENGL_LIBRARIES} zynaddsubfx_gui)
 
     add_definitions(-DFLTK_GUI)
+
     message(STATUS "Will build FLTK gui")
 
     include_directories(
-                    ${FLTK_INCLUDE_DIR}
-                    "${CMAKE_CURRENT_SOURCE_DIR}/UI"
-                    "${CMAKE_CURRENT_BINARY_DIR}/UI"
-                    )
+        ${FLTK_INCLUDE_DIR}
+        "${CMAKE_CURRENT_SOURCE_DIR}/UI"
+        "${CMAKE_CURRENT_BINARY_DIR}/UI")
 
     add_subdirectory(UI)
 endif()
@@ -284,10 +275,9 @@ if(NtkGui)
     message(STATUS "Will build NTK gui")
 
     include_directories(
-                    ${NTK_INCLUDE_DIRS}
-                    "${CMAKE_CURRENT_SOURCE_DIR}/UI"
-                    "${CMAKE_CURRENT_BINARY_DIR}/UI"
-                    )
+        ${NTK_INCLUDE_DIRS}
+        "${CMAKE_CURRENT_SOURCE_DIR}/UI"
+        "${CMAKE_CURRENT_BINARY_DIR}/UI")
 
     add_subdirectory(UI)
 endif()
@@ -295,25 +285,6 @@ endif()
 ########### General section ##############
 # Following this should be only general compilation code, and no mention
 # of module-specific variables
-
-link_directories(${AUDIO_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${FFTW_LIBRARY_DIRS} ${FLTK_LIBRARY_DIRS} ${NTK_LIBRARY_DIRS})
-
-include_directories(
-	${CMAKE_CURRENT_SOURCE_DIR}
-	${CMAKE_CURRENT_BINARY_DIR}
-	MXml
-	)
-
-
-
-set(NONGUI_LIBRARIES
-	zynaddsubfx_misc
-	zynaddsubfx_synth
-	zynaddsubfx_effect
-	zynaddsubfx_params
-	zynaddsubfx_dsp
-	zynaddsubfx_nio
-	)
 
 add_subdirectory(Misc)
 add_subdirectory(Synth)
@@ -324,39 +295,56 @@ add_subdirectory(Nio)
 add_subdirectory(MXml)
 
 add_library(zynaddsubfx_core STATIC
-	${zynaddsubfx_dsp_SRCS}
-	${zynaddsubfx_effect_SRCS}
-	${zynaddsubfx_misc_SRCS}
-	${zynaddsubfx_params_SRCS}
-	${zynaddsubfx_synth_SRCS}
-	)
+    ${zynaddsubfx_dsp_SRCS}
+    ${zynaddsubfx_effect_SRCS}
+    ${zynaddsubfx_misc_SRCS}
+    ${zynaddsubfx_params_SRCS}
+    ${zynaddsubfx_synth_SRCS})
+
+target_include_directories(zynaddsubfx_core
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+    PUBLIC ${CMAKE_CURRENT_BINARY_DIR}
+    PUBLIC MXml)
+
+target_link_directories(zynaddsubfx_core
+    PRIVATE ${AUDIO_LIBRARY_DIRS}
+    PRIVATE ${ZLIB_LIBRARY_DIRS}
+    PRIVATE ${FFTW_LIBRARY_DIRS}
+    PRIVATE ${FLTK_LIBRARY_DIRS}
+    PRIVATE ${NTK_LIBRARY_DIRS})
 
 target_link_libraries(zynaddsubfx_core
-	${ZLIB_LIBRARIES}
-	${FFTW_LIBRARIES}
-	${MXML_LIBRARIES}
-	${OS_LIBRARIES}
-	MXml
-	pthread)
+    PRIVATE ${ZLIB_LIBRARIES}
+    PRIVATE ${FFTW_LIBRARIES}
+    PRIVATE ${MXML_LIBRARIES}
+    PRIVATE ${OS_LIBRARIES}
+    PRIVATE MXml
+    PRIVATE pthread)
 
-add_executable(zynaddsubfx main.cpp)
+if(NOT AVOID_ASM)
+    message(STATUS "Compiling with x86 opcode support")
+    target_compile_definitions(zynaddsubfx_core
+        PUBLIC -DASM_F2I_YES)
+endif()
+
+add_executable(zynaddsubfx
+    main.cpp)
 
 target_link_libraries(zynaddsubfx
-    zynaddsubfx_core
-	zynaddsubfx_nio
-	${GUI_LIBRARIES}
-	${NIO_LIBRARIES}
-	${AUDIO_LIBRARIES}
-	)
+    PRIVATE zynaddsubfx_nio
+    PRIVATE zynaddsubfx_core
+    PRIVATE ${GUI_LIBRARIES}
+    PRIVATE ${NIO_LIBRARIES}
+    PRIVATE ${AUDIO_LIBRARIES})
 
-if (WIN32)
+if(WIN32)
     find_file(FFTW_BIN_PATH
         NAME "libfftw3-3.dll"
         PATHS ${CMAKE_PREFIX_PATH}/bin)
 
     configure_file(${FFTW_BIN_PATH} ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 
-    if (PaEnable)
+    if(PaEnable)
         find_file(PORTAUDIO_BIN_PATH
             NAME "libportaudio.dll"
             PATHS ${CMAKE_PREFIX_PATH}/bin)
@@ -365,31 +353,41 @@ if (WIN32)
     endif(PaEnable)
 endif(WIN32)
 
-if (DssiEnable)
+if(DssiEnable)
     add_library(zynaddsubfx_dssi SHARED
-            Output/DSSIaudiooutput.cpp
-            )
+        Output/DSSIaudiooutput.cpp)
 
     target_link_libraries(zynaddsubfx_dssi
-    zynaddsubfx_core
-            ${OS_LIBRARIES}
-            )
-    if (${CMAKE_SIZEOF_VOID_P} EQUAL "8")
-            install(TARGETS zynaddsubfx_dssi LIBRARY DESTINATION lib64/dssi/)
-    else ()
-            install(TARGETS zynaddsubfx_dssi LIBRARY DESTINATION lib/dssi/)
-    endif ()
+        PRIVATE zynaddsubfx_core
+        PRIVATE ${OS_LIBRARIES})
+
+    if(${CMAKE_SIZEOF_VOID_P} EQUAL "8")
+        install(
+            TARGETS zynaddsubfx_dssi
+            LIBRARY DESTINATION lib64/dssi/)
+    else()
+        install(
+            TARGETS zynaddsubfx_dssi
+            LIBRARY DESTINATION lib/dssi/)
+    endif()
 endif()
 
 message(STATUS "Link libraries: ${ZLIB_LIBRARY} ${FFTW_LIBRARY} ${MXML_LIBRARIES} ${AUDIO_LIBRARIES} ${OS_LIBRARIES}")
-install(TARGETS zynaddsubfx
-	RUNTIME DESTINATION bin
-	)
+
+install(
+    TARGETS zynaddsubfx
+    RUNTIME DESTINATION bin)
 
 if(NtkGui)
-install(DIRECTORY ../pixmaps DESTINATION share/zynaddsubfx)
-add_definitions(-DPIXMAP_PATH="${CMAKE_INSTALL_PREFIX}/share/zynaddsubfx/pixmaps/")
-add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+    install(
+        DIRECTORY ../pixmaps
+        DESTINATION share/zynaddsubfx)
+
+    target_compile_definitions(zynaddsubfx
+        PRIVATE -DPIXMAP_PATH="${CMAKE_INSTALL_PREFIX}/share/zynaddsubfx/pixmaps/")
+
+    target_compile_definitions(zynaddsubfx
+        PRIVATE -DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 endif(NtkGui)
 
 include(CTest)

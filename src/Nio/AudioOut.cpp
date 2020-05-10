@@ -27,7 +27,7 @@
 using namespace std;
 
 #include "OutMgr.h"
-#include "../Misc/Master.h"
+#include "../globals.h"
 #include "AudioOut.h"
 
 AudioOut::AudioOut()
