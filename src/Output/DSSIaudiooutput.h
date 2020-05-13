@@ -19,8 +19,8 @@
   Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 */
-#ifndef VST_AUDIO_OUTPUT_H
-#define VST_AUDIO_OUTPUT_H
+#ifndef DSSI_AUDIO_OUTPUT_H
+#define DSSI_AUDIO_OUTPUT_H
 
 #include <pthread.h>
 
