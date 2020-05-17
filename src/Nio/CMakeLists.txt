@@ -20,10 +20,23 @@ target_include_directories(zynaddsubfx_nio
     PUBLIC ../MXml)
 
 target_compile_definitions(zynaddsubfx_nio
-    PRIVATE -DOUT_DEFAULT="${DefaultOutput}")
-
-target_compile_definitions(zynaddsubfx_nio
+    PRIVATE -DOUT_DEFAULT="${DefaultOutput}"
     PRIVATE -DIN_DEFAULT="${DefaultInput}")
+
+if(WIN32)
+    target_sources(zynaddsubfx_nio
+        PRIVATE RtEngine.cpp
+        PRIVATE RtEngine.h
+        PRIVATE RtError.h
+        PRIVATE RtMidi.cpp
+        PRIVATE RtMidi.h)
+
+    target_compile_definitions(zynaddsubfx_nio
+        PRIVATE -D__WINDOWS_MM__)
+
+    target_link_libraries(zynaddsubfx_nio
+        PRIVATE winmm)
+endif()
 
 if(JackEnable)
     target_sources(zynaddsubfx_nio

@@ -13,18 +13,38 @@ if(CompileTests)
     add_subdirectory(tests)
 endif(CompileTests)
 
-install(FILES AUTHORS.txt COPYING FAQ.txt HISTORY.txt README.txt
-    DESTINATION share/doc/zynaddsubfx
+install(
+    FILES
+        AUTHORS.txt
+        COPYING
+        FAQ.txt
+        HISTORY.txt
+        README.txt
+    DESTINATION
+        share/doc/zynaddsubfx
     )
 
-install(FILES zynaddsubfx-jack.desktop zynaddsubfx-alsa.desktop
-    DESTINATION share/applications)
+install(
+    FILES
+        zynaddsubfx-jack.desktop
+        zynaddsubfx-alsa.desktop
+    DESTINATION
+        share/applications)
 
-install(FILES zynaddsubfx.svg
-    DESTINATION share/pixmaps)
+install(
+    FILES
+        zynaddsubfx.svg
+    DESTINATION
+        share/pixmaps)
 
-install(DIRECTORY instruments/banks
-    DESTINATION share/zynaddsubfx)
+install(
+    DIRECTORY
+        instruments/banks
+    DESTINATION
+        share/zynaddsubfx)
 
-install(DIRECTORY instruments/examples
-    DESTINATION share/zynaddsubfx)
+install(
+    DIRECTORY
+        instruments/examples
+    DESTINATION
+        share/zynaddsubfx)

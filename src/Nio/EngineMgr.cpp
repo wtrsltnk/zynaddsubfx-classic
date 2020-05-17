@@ -7,6 +7,9 @@
 #include "AudioOut.h"
 #include "MidiIn.h"
 #include "NulEngine.h"
+#ifdef _WIN32
+#include "RtEngine.h"
+#endif
 #if OSS
 #include "OssEngine.h"
 #endif
@@ -34,6 +37,9 @@ EngineMgr::EngineMgr()
 
     //conditional compiling mess (but contained)
     engines.push_back(defaultEng);
+#ifdef _WIN32
+    engines.push_back(new RtEngine());
+#endif
 #if OSS
     engines.push_back(new OssEngine());
 #endif
