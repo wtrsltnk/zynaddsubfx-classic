@@ -1,4 +1,6 @@
-set(UI_fl_files
+set_source_files_properties(UI/MasterUI.h PROPERTIES GENERATED 1)
+
+fltk_wrap_ui(zynaddsubfx_gui
     ADnoteUI.fl
     BankUI.fl
     ConfigUI.fl
@@ -15,9 +17,6 @@ set(UI_fl_files
     ResonanceUI.fl
     SUBnoteUI.fl
     VirKeyboard.fl)
-
-set_source_files_properties(UI/MasterUI.h PROPERTIES GENERATED 1)
-fltk_wrap_ui(zynaddsubfx_gui ${UI_fl_files})
 
 add_library(zynaddsubfx_gui STATIC
     ${zynaddsubfx_gui_FLTK_UI_SRCS}

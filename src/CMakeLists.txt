@@ -286,20 +286,72 @@ endif()
 # Following this should be only general compilation code, and no mention
 # of module-specific variables
 
-add_subdirectory(Misc)
-add_subdirectory(Synth)
-add_subdirectory(Effects)
-add_subdirectory(Params)
-add_subdirectory(DSP)
 add_subdirectory(Nio)
 add_subdirectory(MXml)
 
 add_library(zynaddsubfx_core STATIC
-    ${zynaddsubfx_dsp_SRCS}
-    ${zynaddsubfx_effect_SRCS}
-    ${zynaddsubfx_misc_SRCS}
-    ${zynaddsubfx_params_SRCS}
-    ${zynaddsubfx_synth_SRCS})
+    globals.h)
+
+target_sources(zynaddsubfx_core
+    PRIVATE DSP/AnalogFilter.cpp
+    PRIVATE DSP/FFTwrapper.cpp
+    PRIVATE DSP/Filter.cpp
+    PRIVATE DSP/FormantFilter.cpp
+    PRIVATE DSP/SVFilter.cpp
+    PRIVATE DSP/Unison.cpp)
+
+target_sources(zynaddsubfx_core
+    PRIVATE Effects/Alienwah.cpp
+    PRIVATE Effects/Chorus.cpp
+    PRIVATE Effects/Distorsion.cpp
+    PRIVATE Effects/DynamicFilter.cpp
+    PRIVATE Effects/Echo.cpp
+    PRIVATE Effects/Effect.cpp
+    PRIVATE Effects/EffectLFO.cpp
+    PRIVATE Effects/EffectMgr.cpp
+    PRIVATE Effects/EQ.cpp
+    PRIVATE Effects/Phaser.cpp
+    PRIVATE Effects/Reverb.cpp)
+
+target_sources(zynaddsubfx_core
+    PRIVATE Misc/Bank.cpp
+    PRIVATE Misc/Config.cpp
+    PRIVATE Misc/Dump.cpp
+    PRIVATE Misc/Master.cpp
+    PRIVATE Misc/Microtonal.cpp
+    PRIVATE Misc/Part.cpp
+    PRIVATE Misc/Util.cpp
+    PRIVATE Misc/XMLwrapper.cpp
+    PRIVATE Misc/Recorder.cpp
+    PRIVATE Misc/WavFile.cpp
+    PRIVATE Misc/WaveShapeSmps.cpp)
+
+target_sources(zynaddsubfx_core
+    PRIVATE Params/ADnoteParameters.cpp
+    PRIVATE Params/Controller.cpp
+    PRIVATE Params/EnvelopeParams.cpp
+    PRIVATE Params/FilterParams.cpp
+    PRIVATE Params/LFOParams.cpp
+    PRIVATE Params/PADnoteParameters.cpp
+    PRIVATE Params/Presets.cpp
+    PRIVATE Params/PresetsArray.cpp
+    PRIVATE Params/PresetsStore.cpp
+    PRIVATE Params/SUBnoteParameters.cpp)
+
+if(LashEnable)
+    target_sources(zynaddsubfx_core
+        PRIVATE Misc/LASHClient.cpp)
+endif()
+
+target_sources(zynaddsubfx_core
+    PRIVATE Synth/SynthNote.cpp
+    PRIVATE Synth/ADnote.cpp
+    PRIVATE Synth/Envelope.cpp
+    PRIVATE Synth/LFO.cpp
+    PRIVATE Synth/OscilGen.cpp
+    PRIVATE Synth/PADnote.cpp
+    PRIVATE Synth/Resonance.cpp
+    PRIVATE Synth/SUBnote.cpp)
 
 target_include_directories(zynaddsubfx_core
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
