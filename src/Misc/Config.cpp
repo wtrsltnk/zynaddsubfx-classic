@@ -314,5 +314,14 @@ void Config::saveConfig(const char *filename)
 void Config::getConfigFileName(char *name, int namesize)
 {
     name[0] = 0;
-    snprintf(name, namesize, "%s%s", getenv("HOME"), "/.zynaddsubfxXML.cfg");
+    char const *home = getenv("HOME");
+    if (home == nullptr)
+    {
+        home = getenv("%LOCALAPPDATA%");
+    }
+    if (home == nullptr)
+    {
+        home = ".";
+    }
+    snprintf(name, namesize, "%s%s", home, "/.zynaddsubfxXML.cfg");
 }
